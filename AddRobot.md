@@ -20,7 +20,11 @@ source ~/devel/src/catkin_data_ws/src/install/setup.bash
   ros2 pkg create my_robot_description
   ```
 - Add **URDF/Xacro model** and required meshes (`.stl`, `.dae`).
+- Generate convexes: https://github.com/jrl-umi3218/mc-talos/blob/main/utils/generate_convexes.sh
 - Define **surfaces** needed for `mc_rtc` (grippers, feet, etc.).
+  ```bash
+  my_robot_description/surfaces/
+  ```
 - Ensure the package is properly structured and build it.
 
 ## **2. Create the Robot Module**
