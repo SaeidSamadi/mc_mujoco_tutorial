@@ -1,11 +1,11 @@
-# mc_mujoco_tutorial
-
-## **Instructions**
+# mc_rtc Installation
 
 ### **1. Install `mc_rtc` Using the Superbuild Script**
 
 #### **GitHub Repository:**
 [mc-rtc-superbuild](https://github.com/mc-rtc/mc-rtc-superbuild)
+
+Clone it to the mc_rtc folder (preference)
 
 #### **Installation Steps:**
 Run the following command in the `mc_rtc` directory:
@@ -39,6 +39,129 @@ sudo rm -rf /usr/local/lib/python3.10/dist-packages/mc_rtc*
 ```
 
 ---
+
+# **Install MuJoCo 3.3.0**
+
+### **🚀 Install MuJoCo 3.3.0 & Modify `mc_mujoco` Installation Steps**
+Since the **latest MuJoCo release is 3.3.0**, we will install this version and update the installation steps for `mc_mujoco` accordingly.
+
+
+### **🔹 Step 1: Create the MuJoCo Directory**
+First, create the target directory for MuJoCo:
+```bash
+mkdir -p ${HOME}/.mujoco/mujoco_3.3.0
+cd ${HOME}/.mujoco
+```
+
+---
+
+### **🔹 Step 2: Download MuJoCo 3.3.0**
+Download the latest release from DeepMind’s GitHub:
+```bash
+wget https://github.com/deepmind/mujoco/releases/download/3.3.0/mujoco-3.3.0-linux-x86_64.tar.gz -O mujoco-3.3.0.tar.gz
+```
+
+---
+
+### **🔹 Step 3: Extract MuJoCo**
+Extract the archive to your MuJoCo directory:
+```bash
+tar -xvzf mujoco-3.3.0.tar.gz -C ${HOME}/.mujoco/mujoco_3.3.0 --strip-components=1
+```
+This ensures the extracted files go **directly into `mujoco_3.3.0`** without an extra folder.
+
+---
+
+### **🔹 Step 4: Set Up Environment Variables**
+Add MuJoCo to your system paths by modifying your `~/.bashrc`:
+```bash
+echo 'export MUJOCO_PATH=${HOME}/.mujoco/mujoco_3.3.0' >> ~/.bashrc
+echo 'export LD_LIBRARY_PATH=${MUJOCO_PATH}/bin:$LD_LIBRARY_PATH' >> ~/.bashrc
+echo 'export PATH=${MUJOCO_PATH}/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc
+```
+
+---
+
+### **🔹 Step 5: Install Required Dependencies**
+Ensure all required libraries are installed:
+```bash
+sudo apt update
+sudo apt install libgl1 libosmesa6 libegl1 libglew-dev patchelf
+```
+
+---
+
+### **🔹 Step 6: Verify Installation**
+Check if MuJoCo is correctly installed:
+```bash
+ls ${MUJOCO_PATH}
+```
+You should see **directories like `bin/`, `include/`, `lib/`, `model/`**.
+
+To test MuJoCo, try:
+```bash
+mujoco_gl
+```
+If a visualization window appears, **MuJoCo is installed successfully!** ✅
+
+---
+
+# **Install `mc_mujoco` with MuJoCo 3.3.0**
+
+Now that MuJoCo is installed under **`${HOME}/.mujoco/mujoco_3.3.0`**, modify the `mc_mujoco` installation steps accordingly.
+
+### **🔹 Step 1: Clone `mc_mujoco` Repository**
+```bash
+git clone --recursive git@github.com:rohanpsingh/mc_mujoco.git
+cd mc_mujoco
+```
+
+---
+
+### **🔹 Step 2: Create Build Directory**
+```bash
+mkdir build && cd build
+```
+
+---
+
+### **🔹 Step 3: Run `CMake` with the Correct MuJoCo Path**
+Modify the `MUJOCO_ROOT_DIR` to use **MuJoCo 3.3.0**:
+```bash
+cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DMUJOCO_ROOT_DIR=${HOME}/.mujoco/mujoco_3.3.0
+```
+
+---
+
+### **🔹 Step 4: Compile and Install**
+```bash
+make -j$(nproc)
+make install
+```
+
+---
+
+### **🔹 Step 5: Add Environment Variables for `mc_mujoco`**
+Update your `~/.bashrc` to include `mc_mujoco` paths:
+```bash
+echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/.mujoco/mujoco_3.3.0/lib:${HOME}/.mujoco/mujoco_3.3.0/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+
+---
+
+### **🔹 Step 6: Run `mc_mujoco`**
+```bash
+mc_mujoco
+```
+
+
+
+
+
+
+
 
 ### **3. Install `mc_mujoco`**
 
