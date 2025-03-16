@@ -20,6 +20,11 @@ Then, build with:
 ```bash
 cmake --build mc-rtc-superbuild/build --config RelWithDebInfo
 ```
+Also add the following line to `.bashrc`:
+
+```bash
+source ~/devel/src/catkin_data_ws/devel/setup.bash
+```
 
 #### **Notes:**
 - This will install in `/home/sasa/devel/build/mc_rtc/`.
