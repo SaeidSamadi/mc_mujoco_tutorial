@@ -22,6 +22,22 @@ sudo apt install curl -y
 curl -sSL 'https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc' | sudo tee /etc/apt/trusted.gpg.d/ros.asc
 ```
 
+## In case of error:
+#### **Remove Old ROS GPG Key**
+```bash
+sudo apt-key del F42ED6FBAB17C654
+```
+
+---
+
+#### **Add the New ROS GPG Key**
+Ubuntu 20.04 uses **apt-key**, but since it is deprecated, we will use the proper method.
+
+```bash
+sudo apt install curl -y
+curl -sSL 'https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc' | sudo tee /etc/apt/trusted.gpg.d/ros.asc
+```
+
 ---
 
 ## **Step 3: Update Package Lists**
