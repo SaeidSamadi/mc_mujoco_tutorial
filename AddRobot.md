@@ -1,4 +1,14 @@
-# Adding New Robot to mc_rtc (Steps)
+# Add new robot - ROS1
+
+- Create new worspace then clone talos-data there
+- If you have clone issue, try
+  ```bash
+  git config --global url.https://github.com/.insteadOf git://github.com/
+  ```
+- Install mc-talos separately
+- 
+
+# Adding New Robot to mc_rtc ROS2
 
 ### It should have a description
 - this one needs to be added to the catkin_data_ws
