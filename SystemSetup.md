@@ -176,3 +176,79 @@ Now you can clone repositories using SSH instead of HTTPS:
 ```bash
 git clone git@github.com:your-username/repository-name.git
 ```
+
+---
+---
+---
+
+# CMAKE Version Issue for the superbuild script
+
+We **can** install a higher version of **CMake** on **Ubuntu 20.04**, but the **default version** available in Ubuntu 20.04 repositories is **CMake 3.16.3**, as you’ve seen. 
+
+### **How to upgrade CMake to a higher version without removing it?**
+
+**Install a Newer Version from the Official CMake Website** (this method does not replace the system-installed CMake):
+   
+   - **Step 1**: Download the latest version of **CMake** from the official website:
+
+     ```bash
+     wget https://cmake.org/files/v3.21/cmake-3.21.3-linux-x86_64.tar.gz
+     ```
+
+   - **Step 2**: Extract the downloaded file:
+
+     ```bash
+     tar -zxvf cmake-3.21.3-linux-x86_64.tar.gz
+     ```
+
+   - **Step 3**: Move the extracted files to `/opt` or any directory of your choice:
+
+     ```bash
+     sudo mv cmake-3.21.3-linux-x86_64 /opt/cmake-3.21.3
+     ```
+
+   - **Step 4**: Create a symbolic link to the new version of CMake:
+
+     ```bash
+     sudo ln -s /opt/cmake-3.21.3/bin/cmake /usr/local/bin/cmake
+     ```
+
+   - **Step 5**: Verify the installed version:
+
+     ```bash
+     cmake --version
+     ```
+
+     This will now use **CMake 3.21** or the version you installed. The default **system CMake** (3.16.3) will still remain intact for system use, and you will now have access to a newer version.
+     **This will show after a system re-run! (Restart or sth)**
+
+## In case if issue
+
+The error message you're seeing indicates that the **CMake** installation might not have been completed correctly. This often happens when a symbolic link points to the wrong location or when the `CMAKE_ROOT` path isn't set correctly.
+
+### **Fix the CMake Installation**
+
+To resolve this issue, let's follow these steps:
+
+### **Step 1: Remove the Previous Symbolic Link**
+First, remove the existing symbolic link you created earlier, as it may be pointing to an incomplete or incorrect path.
+
+```bash
+sudo rm /usr/local/bin/cmake
+```
+
+### **Step 2: Create the Correct Symbolic Link**
+Make sure you are pointing to the correct executable in your new **CMake** installation directory. After extracting **CMake** into `/opt/cmake-3.21.3`, create the symbolic link again but ensure that you are pointing to the right executable. The full path for `cmake` inside the folder should be `/opt/cmake-3.21.3/bin/cmake`.
+
+```bash
+sudo ln -s /opt/cmake-3.21.3/bin/cmake /usr/local/bin/cmake
+```
+
+### **Step 3: Verify CMake Version**
+Once the symbolic link is fixed, verify the **CMake** version again:
+
+```bash
+cmake --version
+```
+
+It should now point to the new version (3.21 or higher).
