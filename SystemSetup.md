@@ -75,3 +75,88 @@ Check if ROS is installed correctly:
 roscore
 ```
 If `roscore` runs successfully without errors, your ROS1 Noetic installation is complete.
+
+---
+---
+---
+
+# SSH setup
+
+To add an **SSH key** to your local PC for **GitHub**, follow these steps:
+
+---
+
+## **Step 1: Check for Existing SSH Keys**
+First, check if you already have an SSH key:
+```bash
+ls -al ~/.ssh
+```
+If you see files like `id_rsa` and `id_rsa.pub`, you already have a key. If not, generate one.
+
+---
+
+## **Step 2: Generate a New SSH Key (if needed)**
+If you don't have a key or want a new one, run:
+```bash
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+Replace `"your_email@example.com"` with your GitHub email.  
+When prompted, press **Enter** to save in the default location (`~/.ssh/id_rsa`).  
+For the passphrase, you can leave it empty or set one.
+
+---
+
+## **Step 3: Start the SSH Agent and Add Your Key**
+Run:
+```bash
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_rsa
+```
+
+---
+
+## **Step 4: Copy Your SSH Key**
+Copy the public key to your clipboard:
+```bash
+cat ~/.ssh/id_rsa.pub
+```
+Copy the output (the long text starting with `ssh-rsa ...`).
+
+---
+
+## **Step 5: Add the Key to GitHub**
+1. Go to **GitHub** → **Settings** → **SSH and GPG keys**  
+   ([Direct Link](https://github.com/settings/keys))
+2. Click **New SSH Key**  
+3. **Title**: Name it (e.g., "Ubuntu 20.04 PC")  
+4. **Key**: Paste the copied key  
+5. Click **Add SSH Key**
+
+---
+
+## **Step 6: Test the Connection**
+Run:
+```bash
+ssh -T git@github.com
+```
+If everything is set up correctly, you should see:
+```bash
+Hi <your-github-username>! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
+---
+
+## **Step 7: Configure Git (Optional)**
+Set your Git name and email:
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+```
+
+---
+
+## **Step 8: Clone a Repo Using SSH**
+Now you can clone repositories using SSH instead of HTTPS:
+```bash
+git clone git@github.com:your-username/repository-name.git
+```
