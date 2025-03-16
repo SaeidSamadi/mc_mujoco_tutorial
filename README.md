@@ -154,40 +154,28 @@ echo 'export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${HOME}/.mujoco/mujoco_3.3.0/lib:$
 source ~/.bashrc
 ```
 
+The `.bashrc` should look like:
+
+```bash
+# Set MuJoCo Path
+export MUJOCO_PATH=${HOME}/.mujoco/mujoco_3.3.0
+export LD_LIBRARY_PATH=${MUJOCO_PATH}/bin:${MUJOCO_PATH}/lib:$LD_LIBRARY_PATH
+export PATH=${MUJOCO_PATH}/bin:$PATH
+
+# Source ROS Noetic
+source /opt/ros/noetic/setup.bash
+
+# Source Catkin Workspace (ROS Packages)
+source ~/devel/src/catkin_data_ws/devel/setup.bash
+
+```
+
 ---
 
 ### **🔹 Step 6: Run `mc_mujoco`**
 ```bash
 mc_mujoco
 ```
-
-
-
-
-
-
-
-
-### **3. Install `mc_mujoco`**
-
-#### **GitHub Repository:**
-[mc_mujoco](https://github.com/rohanpsingh/mc_mujoco)
-
-#### **Installation Steps:**
-Run the following command in the `mc_mujoco` build directory:
-```bash
-cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DMUJOCO_ROOT_DIR=/home/sasa/Softwares/mujoco/mujoco-3.2.7 -Dmc_rtc_DIR=/home/sasa/devel/install/share/mc_rtc/cmake
-```
-
-To debug if `mc_rtc` is installed correctly, run:
-```bash
-find ~/devel/install -name "mc_rtcConfig.cmake"
-```
-Expected output:
-```
-/home/sasa/devel/install/lib/cmake/mc_rtc/mc_rtcConfig.cmake
-```
-If the address is different, update the `CMAKE_PREFIX_PATH` accordingly.
 
 ---
 
