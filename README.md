@@ -181,6 +181,132 @@ mc_mujoco
 
 ## **Adding Objects in `mc_mujoco`**
 
+Here I try to add Unitree G1 as a test.
+
+You're right! **`unitree_legged_sdk` does not contain the URDF** files directly. Instead, Unitree provides the URDF in a separate repository. Let’s switch to a **confirmed source** and get a robot that we can quickly run in `mc_mujoco`.  
+
+---
+
+## **🚀 Let's Use the Unitree Go1 URDF for mc_mujoco**
+Since **Unitree Go1 (not G1)** has an openly available URDF, we will use that instead.
+
+### **✅ Step 1: Clone the Correct Unitree Repository**
+```bash
+git clone https://github.com/unitreerobotics/unitree_ros.git
+cd unitree_ros/robots_description/urdf
+```
+
+---
+
+### **✅ Step 2: Check for URDF Files**
+```bash
+cd robots/
+```
+You should see robot description files.
+
+Awesome! You have **Unitree G1** URDFs in different configurations. Let's pick one and convert it to **MuJoCo format** for `mc_mujoco`.
+
+---
+
+## **🚀 Step 1: Choose a Suitable URDF**
+From your list, these look like good candidates:
+- `g1_29dof.urdf` (29 degrees of freedom)
+- `g1_23dof.urdf` (simpler version)
+
+For now, let's use **`g1_29dof.urdf`** since it's likely the most detailed version.
+
+---
+
+## **✅ Step 2: Convert URDF to MuJoCo XML**
+Run:
+```bash
+urdf2mjcf g1_29dof.urdf --output g1_mujoco.xml
+```
+
+If the conversion works without errors, you should get `g1_mujoco.xml`.
+
+---
+
+## **✅ Step 3: Integrate G1 into mc_mujoco**
+1️⃣ **Copy the converted MuJoCo XML file to `mc_mujoco`'s robot folder**:
+```bash
+mkdir -p ~/.config/mc_mujoco
+cp g1_mujoco.xml ~/.config/mc_mujoco/g1.xml
+```
+
+2️⃣ **Create a new mc_rtc robot configuration file**:
+```bash
+mkdir -p ~/.config/mc_rtc/robots/
+nano ~/.config/mc_rtc/robots/g1.yaml
+```
+
+Inside `g1.yaml`, add:
+```yaml
+robot_module:
+  name: "g1"
+  urdf_path: "/home/noodles/robots/unitree_ros/robots/g1_description/g1_29dof.urdf"
+  base_link: "base_link"
+```
+Modify the path if necessary.
+
+---
+
+## **✅ Step 4: Run G1 in mc_mujoco**
+Launch `mc_mujoco` with Unitree G1:
+```bash
+mc_mujoco --robot g1
+```
+
+---
+
+## **🔹 What If the URDF Conversion Fails?**
+If `urdf2mjcf` gives errors (like missing meshes), try:
+```bash
+find ~/robots/unitree_ros/robots/g1_description/ -name "*.stl"
+```
+If the mesh files exist but are missing in the URDF, you may need to **update the URDF paths manually** before converting.
+
+---
+
+## **🌟 Summary**
+✔ You have **Unitree G1 URDF**  
+✔ Convert it to **MuJoCo XML**  
+✔ Copy and configure for **mc_mujoco**  
+✔ Run it in `mc_mujoco`  
+
+🚀 **Let me know if you hit any issues during conversion!**
+
+# In case of error in creating g1_mujoco.xml file:
+
+That's because of How the STL Files Are Referenced in the URDF. Run this command to inspect the file paths inside your g1_29dof.urdf:
+
+```bash
+grep -i "meshes" ~/robots/unitree_ros/robots/g1_description/g1_29dof.urdf
+```
+You might see something like:
+
+```xml
+<mesh filename="meshes/pelvis_contour_link.STL"/>
+```
+
+or
+
+```xml
+<mesh filename="package://g1_description/meshes/pelvis_contour_link.STL"/>
+```
+
+If it uses relative paths like meshes/filename.STL, urdf2mjcf might not know where to look.
+
+If that's the case, instead we should use absolute directories.
+
+```xml
+<mesh filename="/home/noodles/robots/unitree_ros/robots/g1_description/meshes/pelvis_contour_link.STL"/>
+```
+
+
+
+=======================
+
 ### **Steps to Add a New Object (e.g., Talos)**
 
 #### **1. Clone the Object Model Files**
