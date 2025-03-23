@@ -43,6 +43,53 @@ sudo rm -rf /usr/local/lib/cmake/mc_rtc
 sudo rm -rf /usr/local/lib/python3.10/dist-packages/mc_rtc*
 ```
 
+In case of python-related erros like
+
+```bash
+ninja: build stopped: subcommand failed.
+CMake Error at /home/noodles/Software/mc_rtc/mc-rtc-superbuild/cmake/scripts/cmake-with-prefix.cmake:22 (execute_process):
+  execute_process failed command indexes:
+
+    1: "Child return code: 1"
+
+
+
+gmake[2]: *** [CMakeFiles/Eigen3ToPython.dir/build.make:89: prefix/Eigen3ToPython/src/Eigen3ToPython-stamp/Eigen3ToPython-build] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:2264: CMakeFiles/Eigen3ToPython.dir/all] Error 2
+```
+
+you can use env:
+
+## ✅ Full Steps to Build `mc_rtc` with `mc_env`
+
+---
+
+### 🧱 1. Create and Activate Your Virtual Environment
+
+```bash
+python3 -m venv ~/mc_env
+source ~/mc_env/bin/activate
+```
+
+---
+
+### 📦 2. Install Required Python Packages
+
+Inside the activated `mc_env`:
+
+```bash
+pip install --upgrade pip
+pip install numpy scipy cython pythran
+```
+
+> ✅ This ensures consistent versions for Python bindings and Cython compilation.
+
+---
+
+### 3. Reinstall
+
+
+
 ---
 
 # **Install MuJoCo 3.3.0**
