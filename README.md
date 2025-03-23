@@ -163,6 +163,13 @@ If a visualization window appears, **MuJoCo is installed successfully!** ✅
 
 Now that MuJoCo is installed under **`${HOME}/.mujoco/mujoco_3.3.0`**, modify the `mc_mujoco` installation steps accordingly.
 
+Or you can test the version and location first:
+
+```bash
+python3 -c "import mujoco; print(mujoco.__version__)"
+python3 -c "import mujoco; print(mujoco.__file__)"
+```
+
 ### **🔹 Step 1: Clone `mc_mujoco` Repository**
 ```bash
 git clone --recursive git@github.com:rohanpsingh/mc_mujoco.git
