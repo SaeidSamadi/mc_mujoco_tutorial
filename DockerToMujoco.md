@@ -96,3 +96,43 @@ cd ~/rby1-sdk/build/examples/cpp
 | Port Communication        | `-p 50051:50051`                                                  | No change (still use `127.0.0.1:50051`)                      |
 | Motion Test App           | Run from `cpp` examples                                          | Same (point to local gRPC address)                          |
 | Dependencies              | Inside container                                                 | Must be manually installed (OpenGL, GLFW)                   |
+
+
+---
+
+Comment:
+
+My Observation:
+
+The RB-Y1 simulator runs **smoothly inside Docker on Ubuntu 24.04**, but causes issues on **Ubuntu 22.04** due to **X11/GLFW compatibility problems**.
+
+In Ubuntu 22.04, when trying to run the simulator using Docker with GUI support (`xhost +`, `-e DISPLAY`, etc.), the application fails to launch with the following error:
+
+```
+ERROR: Could not initialize GLFW
+```
+
+This is caused by **incompatibility between the container's OpenGL/GLFW requirements and the host's older X11 libraries**. Ubuntu 24.04 ships with newer versions of X11, Mesa, and Wayland support, which are **more compatible with GLFW-based GUI apps running in Docker**.
+
+As a workaround for Ubuntu 22.04 users, instead of running the simulator inside Docker, you can:
+
+1. **Extract the simulator from the Docker image** using:
+
+   ```bash
+   docker create --name temp_sim rainbowroboticsofficial/rby1-sim
+   docker cp temp_sim:/root/exe/app ~/rby1-sim-app
+   docker rm temp_sim
+   ```
+
+2. **Run the simulator natively (outside Docker)** on your host machine:
+
+   ```bash
+   cd ~/rby1-sim-app
+   export LD_LIBRARY_PATH=$(pwd)
+   export MUJOCO_GL=glfw
+   ./app_main
+   ```
+
+This approach bypasses all the X11/GLFW compatibility issues and allows the simulator to run directly using your system's native graphics stack.
+
+This workaround has been tested and confirmed working on Ubuntu 22.04.
