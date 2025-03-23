@@ -1,3 +1,133 @@
+# ROS2 Installation
+
+Installing **ROS 2 Humble** on **Ubuntu 22.04** is the official and most stable pairing. Here's a clean, step-by-step guide to get you up and running quickly.
+
+---
+
+## ✅ Install ROS 2 Humble on Ubuntu 22.04
+
+> 💡 ROS 2 “Humble Hawksbill” is the **official LTS** version for Ubuntu 22.04.
+
+---
+
+### 🧱 Step 1: Set up your sources
+
+```bash
+sudo apt update && sudo apt install -y software-properties-common
+sudo add-apt-repository universe
+```
+
+---
+
+### 🔐 Step 2: Add the ROS 2 GPG key
+
+```bash
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc -o /usr/share/keyrings/ros-archive-keyring.gpg
+```
+
+---
+
+### 📦 Step 3: Add the ROS 2 repository
+
+```bash
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+```
+
+---
+
+### 🔄 Step 4: Update package index
+
+```bash
+sudo apt update
+```
+
+In case of errors regarding the issue with the **GPG key** setup: the system can’t verify the ROS 2 repository because the **public key isn’t properly configured**:
+
+### 🛠 Run this instead:
+
+```bash
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | \
+gpg --dearmor | sudo tee /usr/share/keyrings/ros-archive-keyring.gpg > /dev/null
+```
+
+That ensures the key is stored in a format `apt` can use with `signed-by`.
+
+Then run:
+
+```bash
+sudo apt update
+```
+
+✅ The GPG error should now be gone and the ROS 2 repo usable.
+
+---
+
+### 📥 Step 5: Install ROS 2 (Desktop version)
+
+This includes RViz, demos, and common tools:
+
+```bash
+sudo apt install -y ros-humble-desktop
+```
+
+If you only want the bare core:
+```bash
+sudo apt install -y ros-humble-ros-base
+```
+
+---
+
+### 🧪 Step 6: Source the environment
+
+```bash
+source /opt/ros/humble/setup.bash
+```
+
+💡 To do this automatically for every new terminal:
+```bash
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+---
+
+### 🔧 Step 7: Install development tools
+
+If you're building ROS packages:
+
+```bash
+sudo apt install -y python3-colcon-common-extensions python3-rosdep python3-vcstool build-essential
+```
+
+---
+
+### 🔄 Step 8: Initialize rosdep
+
+```bash
+sudo rosdep init
+rosdep update
+```
+
+---
+
+## ✅ Test Installation
+
+Try this:
+```bash
+ros2 run demo_nodes_cpp talker
+```
+
+And in another terminal:
+```bash
+ros2 run demo_nodes_cpp listener
+```
+
+If both run and print messages, your ROS 2 setup is working!
+
+
+---
+---
 # ROS1 Installation
 
 To install **ROS1 Noetic** (the latest and final ROS1 distribution) on **Ubuntu 20.04**, follow these steps:
