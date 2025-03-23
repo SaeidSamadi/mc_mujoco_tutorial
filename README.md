@@ -170,6 +170,13 @@ python3 -c "import mujoco; print(mujoco.__version__)"
 python3 -c "import mujoco; print(mujoco.__file__)"
 ```
 
+**BUT MAKE SURE THE INSTALLATION OF MUJOCO IS WITH THE OFFICIAL SITE AND NOT THROUGH PIP PROTOCOL AT ALL!!!**
+**ALSO MAKE SURE THAT THE NAME OF MUJOCO FILE IS WITH UDNERSCORE AND NOT DASH:**
+
+```bash
+mv ~/.mujoco/mujoco-3.3.0 ~/.mujoco/mujoco_3.3.0
+```
+
 ### **🔹 Step 1: Clone `mc_mujoco` Repository**
 ```bash
 git clone --recursive git@github.com:rohanpsingh/mc_mujoco.git
