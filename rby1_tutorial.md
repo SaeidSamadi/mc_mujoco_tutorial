@@ -2,6 +2,14 @@
 
 This guide walks through launching the RB-Y1 robot simulation using Docker for the simulator and `prealpha_ros2` for the controller interface and visualization. It assumes you've already built the workspace and installed required dependencies.
 
+--- 
+
+### 0. Remove Gripper dependencies for simulations
+
+first of all you need to comment out locally the gripper controllers, here:
+
+https://github.com/HumanoidTeam/prealpha_ros2/blob/931c31ed646e0e6772e210408d99d82a848552d3/prealpha_description/control/real.ros2_control.xacro#L26-L40
+
 ---
 
 ### 1. Launch the Simulator
