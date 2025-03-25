@@ -102,3 +102,86 @@ cd ~/rby1-sdk/build/examples/cpp
 ```
 
 ✅ Robot should move inside MuJoCo simulator.
+
+---
+
+# Editing locally and adding to docker
+
+## 🧪 Tutorial: How to See Your Local `rby1-sdk` Edits in Docker Simulation
+
+### ✅ Use Case:
+You're working in a feature branch (e.g., `add-robotiq-gripper`) and want to ensure that your **local changes** (like editing `model_act.xml`) appear in the **Dockerized simulation environment**.
+
+---
+
+### 🔁 Step-by-Step Workflow
+
+#### **1. Make changes in your `rby1-sdk` submodule**
+```bash
+cd ~/Software/humanoidDockers/rby1/rby1-sdk
+git checkout add-robotiq-gripper  # or create/switch to your working branch
+
+# Make your edits, e.g.:
+nano models/rby1a/mujoco/model_act.xml
+
+git add .
+git commit -m "Updated model_act.xml with gripper components"
+git push
+```
+
+---
+
+#### **2. Point the main `rby1` repo to the updated submodule commit**
+```bash
+cd ~/Software/humanoidDockers/rby1
+git checkout add-robotiq-gripper  # Make sure you're on the same working branch
+
+git add rby1-sdk
+git commit -m "Update rby1-sdk submodule pointer with new changes"
+git push
+```
+
+> 💡 This step ensures that the Docker build will include your **latest changes** in `rby1-sdk`.
+
+---
+
+#### **3. Rebuild the app and Docker image**
+```bash
+source venv/bin/activate
+
+conan install . -s build_type=Release -b missing -of build
+cmake --preset conan-release -D BUILD_EXAMPLES=ON
+cmake --build --preset conan-release
+
+mkdir -p output/app
+cp -r ./build/build/Release/_output/* output/app
+cp third-party/mujoco/lib/libmujoco.so.3.2.0 output/app
+
+docker build -t rby1 -f docker/sim.dockerfile .
+```
+
+---
+
+#### **4. Launch the Docker simulator**
+```bash
+xhost +
+docker run --rm -it \
+ -e DISPLAY=${DISPLAY} \
+ -v /tmp/.X11-unix:/tmp/.X11-unix \
+ -p 50051:50051 \
+ --name=rby1-sim \
+ rby1
+```
+
+> 🟢 You should now **see your changes reflected** inside the simulator (e.g., updated models, new geometries, etc.).
+
+---
+
+### 🧠 Common Gotchas
+
+- Don’t forget to `git add rby1-sdk && git commit` in the parent repo — **that’s what actually links your updated submodule state**.
+- Always double-check your `git submodule status` to verify the correct commit is being used.
+- If stuck, you can run:
+  ```bash
+  git submodule update --init --recursive
+  ```
