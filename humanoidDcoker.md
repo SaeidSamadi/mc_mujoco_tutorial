@@ -126,7 +126,7 @@ nano models/rby1a/mujoco/model_act.xml
 
 git add .
 git commit -m "Updated model_act.xml with gripper components"
-git push
+git push origin branch-name
 ```
 
 ---
